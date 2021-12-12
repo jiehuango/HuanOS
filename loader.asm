@@ -1,0 +1,44 @@
+org 0x8000
+section loader_code
+
+;清屏
+mov ax,0x0600
+mov bx,0x0700
+mov cx,0
+mov dx,0x184f
+
+int 0x10
+
+;输出'l'
+mov byte [gs:0x00],'l'
+mov byte [gs:0x01],0xa4
+
+mov ch,0
+mov cl,3
+mov dh,0
+mov dl,0x00
+mov ax,0x820
+mov es,ax
+
+mov al,0x1
+mov ah,0x2
+xor bx,bx
+int 0x13
+jnc 0x81ff
+
+error:
+mov bh,0
+mov bl,0x01
+mov cx,0x5
+mov dx,0
+
+mov ax,'error'
+mov bp,ax
+mov ah,0x13
+mov al,0x01
+
+int 0x10
+
+jmp 0x8200
+
+
